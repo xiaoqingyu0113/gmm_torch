@@ -1,4 +1,3 @@
-from re import U
 import numpy as np
 import itertools
 import matplotlib.pyplot as plt
@@ -15,10 +14,7 @@ class GMM_torch:
     def initialize(self, X,kmeans_iter=10): 
         _, self.N, self.D= X.shape 
         self.device = X.device
-
         kmeans_clf, kmeans_centroids = kmeans(X, K=self.K, Niter=kmeans_iter)
-        self.kmeans_clf_save = kmeans_clf
-        self.kmeans_centroids_save = kmeans_centroids
 
         # initialize paramters
         self.phi = torch.full([self.K], fill_value=1/(self.K)).to(self.device)
@@ -138,6 +134,5 @@ def bcov(points,aweights=None):
         prods = torch.bmm(diffs.unsqueeze(2), diffs.unsqueeze(1)).reshape(K, N, D, D)
         aweights = aweights.unsqueeze(2).unsqueeze(3)
         bcov = (prods*aweights).sum(dim=1) / (aweights.sum(dim=1)-1)
-    return bcov   # KDD
-
+    return bcov   
 
